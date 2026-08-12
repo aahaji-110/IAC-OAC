@@ -107,7 +107,7 @@
         .page-back .page-number { left: auto; right: 20px; }
 
         h2 { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-top: 0; font-size: 1.8rem; }
-        .content { font-size: 1.2rem; line-height: 1.7; white-space: pre-line; flex-grow: 1; }
+        .content { font-size: 1.1rem; line-height: 1.6; white-space: pre-line; flex-grow: 1; }
         
         .divider {
             height: 2px;
@@ -118,12 +118,129 @@
 
         .note-red { 
             color: #ffffff; 
-            margin-top: 15px; 
-            padding: 15px; 
+            margin-top: 10px; 
+            padding: 10px 15px; 
             border: 2px solid var(--accent-red); 
             border-radius: 12px; 
             background: rgba(255, 77, 77, 0.15);
             font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        /* تنسيق بطاقات الصور */
+        .image-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .image-card {
+            flex: 1;
+            text-align: center;
+            background: rgba(0,0,0,0.25);
+            padding: 10px;
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: filter 0.2s ease;
+        }
+
+        .image-card img:hover {
+            filter: brightness(1.1);
+        }
+
+        .image-card.wrong img { border-color: var(--accent-red); }
+        .image-card.correct img { border-color: var(--primary-color); }
+
+        .image-card span {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .image-card.wrong span { color: var(--accent-red); }
+        .image-card.correct span { color: var(--primary-color); }
+
+        .video-box {
+            margin-top: 10px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .video-box video {
+            width: 100%;
+            max-height: 180px;
+            border-radius: 8px;
+        }
+
+        /* نافذة تكبير الصورة (Lightbox Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .modal-content {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 2px solid var(--primary-color);
+            animation: zoomIn 0.25s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-caption {
+            margin-top: 15px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-red);
         }
 
         .controls {
@@ -196,18 +313,44 @@
                 <div class="content">
                     - يمنع منعًا باتا وضع المواطن في الارض
                     - يجب عليك وضع المواطن المسقط في سرير
+
+                    <div class="image-container">
+                        <div class="image-card wrong">
+                            <img src="./images/image_e787fb.jpg" 
+                                 onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/image_e787fb.jpg';" 
+                                 onclick="openModal(this.src, '❌ خطأ - وضع المواطن في الأرض')" 
+                                 alt="خطأ - وضع المواطن في الأرض">
+                            <span>❌ خطأ</span>
+                        </div>
+                        <div class="image-card correct">
+                            <img src="./images/image_e787e0.jpg" 
+                                 onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/image_e787e0.jpg';" 
+                                 onclick="openModal(this.src, '✔️ صحيح - وضع المواطن في السرير')" 
+                                 alt="صحيح - وضع المواطن في السرير">
+                            <span>صحيح ✔️</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="page-number">3</div>
             </div>
             <div class="page-back">
                 <h2>قوانين العلاج خارج المستشفى</h2>
-                <div class="content" style="font-size: 1.1rem;">
+                <div class="content">
                     - يمنع منعًا باتا علاج مواطن مسقط بطلق النار في الخارج
                     - يمنع منعًا باتا علاج مواطن مسقط بشكل كامل في الخارج
                     - يمنع منعًا باتا علاج مواطن اصابة في راسة في الخارج
-                    - يمنع منعًا باتا علاج مواطن لديه 4 اصابات او اكثر في الخارج
+                    - يمنع منعًا باتا معالجة اي شخص يحتاج الى عمل اشعة خارج المستشفى ويجب نقله الى المستشىفى ومباشرة علاجه
                     - يمنع منعًا باتا علاج المواطن في مكان غير امن لك و له
                     - يمنع منعًا باتا علاج المواطن في الارض يجب عليك وضعه في سرير المتنقل
+
+                    <div class="video-box">
+                        <span style="display:block; margin-bottom:5px; color:var(--primary-color); font-size:0.9rem;">شرح طريقة سحب ونقل المصاب لمكان آمن (Escort):</span>
+                        <video controls autoplay loop muted>
+                            <source src="./images/2026-08-10%2000-15-36.mp4" type="video/mp4">
+                            <source src="https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/2026-08-10%2000-15-36.mp4" type="video/mp4">
+                            متصفحك لا يدعم تشغيل الفيديو.
+                        </video>
+                    </div>
                 </div>
                 <div class="note-red">ملاحظة : في حال خالفت احد القوانين يتم استدعائك عليها .</div>
                 <div class="page-number">4</div>
@@ -218,13 +361,13 @@
             <div class="page-front">
                 <h2>تعليمات هامة</h2>
                 <div class="content">
-                    - في حال الشخص مصاب ب اربع اصابات او اكثر او اصابة في الراس يجب عليك نقل الشخص للمستشفى في حال ليس لديه مركبة (الشخص العايش) 
+                    - في حال الشخص يحتاج الى عمل اشعة او اصابة في الراس يجب عليك نقل الشخص للمستشفى في حال ليس لديه مركبة (الشخص العايش) 
 
                     - في حال خالفت التعميم سيتم محاسبتك على بند 7-0
 
                     <div class="note-red">ملاحظة : في حال خالفت احد التعاميم يتم استدعائك عليها</div>
                 </div>
-                <div class="page-number">7</div>
+                <div class="page-number">5</div>
             </div>
             <div class="page-back">
                 <div style="text-align:center; flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
@@ -232,20 +375,27 @@
                     <div style="margin-top:20px; line-height:1.8;">
                         <p>EMS Academy Commander: Abdullah ALGhamdi</p>
                         <p>EMS Academy Deputy: ABDULRAHMAN ABDULLAH</p>
-                        <p>Supervisor Of EMS Academy: Ali Alhaji</p>
+                        <p>Supervisor Of EMS Academy: ALI ALHAJI </p>
                         <p>ALL EMS FTO</p>
                     </div>
                 </div>
 
                 <div class="footer-rights">
                     الحقوق محفوظة لوزارة الصحة في سيرفر MT <br>
-                    اعداد نودي | برمجة وتطوير <a href="#">Ali_go</a>
+                    اعداد و برمجة وتطوير <a href="#">Ali_go</a>
                 </div>
                 <div class="page-number">6</div>
             </div>
         </div>
 
     </div>
+</div>
+
+<!-- Modal تكبير الصور -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="imgExpanded">
+    <div class="modal-caption" id="modalCaption"></div>
 </div>
 
 <div class="controls">
@@ -297,8 +447,22 @@
         document.getElementById('prevBtn').disabled = (currentLoc === 1);
         document.getElementById('nextBtn').disabled = (currentLoc === maxLoc);
     }
+
+    /* وظائف تكبير وإغلاق الصورة */
+    function openModal(src, caption) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('imgExpanded');
+        const captionText = document.getElementById('modalCaption');
+        
+        modal.style.display = "flex";
+        modalImg.src = src;
+        captionText.innerText = caption;
+    }
+
+    function closeModal() {
+        document.getElementById('imageModal').style.display = "none";
+    }
 </script>
 
 </body>
-
 </html>
