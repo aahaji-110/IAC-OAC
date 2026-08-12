@@ -127,7 +127,6 @@
             font-size: 0.95rem;
         }
 
-        /* تنسيق بطاقات الصور */
         .image-container {
             display: flex;
             gap: 15px;
@@ -191,7 +190,6 @@
             border-radius: 8px;
         }
 
-        /* نافذة تكبير الصورة (Lightbox Modal) */
         .modal {
             display: none;
             position: fixed;
@@ -316,17 +314,15 @@
 
                     <div class="image-container">
                         <div class="image-card wrong">
-                            <img src="images/image_e787fb.png" 
-                                 data-name="image_e787fb"
-                                 onerror="handleImgError(this)" 
+                            <img src="images/image_e788fb.jpg" 
+                                 onerror="this.src='https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/image_e788fb.jpg';" 
                                  onclick="openModal(this.src, '❌ خطأ - وضع المواطن في الأرض')" 
                                  alt="خطأ - وضع المواطن في الأرض">
                             <span>❌ خطأ</span>
                         </div>
                         <div class="image-card correct">
-                            <img src="images/image_e787e0.png" 
-                                 data-name="image_e787e0"
-                                 onerror="handleImgError(this)" 
+                            <img src="images/image_e787e0.jpg.jpg" 
+                                 onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/image_e787e0.jpg.jpg';" 
                                  onclick="openModal(this.src, '✔️ صحيح - وضع المواطن في السرير')" 
                                  alt="صحيح - وضع المواطن في السرير">
                             <span>صحيح ✔️</span>
@@ -349,7 +345,7 @@
                         <span style="display:block; margin-bottom:5px; color:var(--primary-color); font-size:0.9rem;">شرح طريقة سحب ونقل المصاب لمكان آمن (Escort):</span>
                         <video controls autoplay loop muted>
                             <source src="images/2026-08-10%2000-15-36.mp4" type="video/mp4">
-                            <source src="./images/2026-08-10 00-15-36.mp4" type="video/mp4">
+                            <source src="https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/2026-08-10%2000-15-36.mp4" type="video/mp4">
                             متصفحك لا يدعم تشغيل الفيديو.
                         </video>
                     </div>
@@ -393,7 +389,6 @@
     </div>
 </div>
 
-<!-- Modal تكبير الصور -->
 <div id="imageModal" class="modal" onclick="closeModal()">
     <span class="modal-close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="imgExpanded">
@@ -450,30 +445,6 @@
         document.getElementById('nextBtn').disabled = (currentLoc === maxLoc);
     }
 
-    /* دالة الفحص الأوتوماتيكي لجميع امتدادات الصور لتخطي مشكلة GitHub Cases */
-    function handleImgError(img) {
-        const baseName = img.getAttribute('data-name');
-        if (!img.dataset.step) {
-            img.dataset.step = "1";
-            img.src = `images/${baseName}.jpg`;
-        } else if (img.dataset.step === "1") {
-            img.dataset.step = "2";
-            img.src = `images/${baseName}.PNG`;
-        } else if (img.dataset.step === "2") {
-            img.dataset.step = "3";
-            img.src = `images/${baseName}.JPG`;
-        } else if (img.dataset.step === "3") {
-            img.dataset.step = "4";
-            img.src = `https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/${baseName}.jpg`;
-        } else if (img.dataset.step === "4") {
-            img.dataset.step = "5";
-            img.src = `https://raw.githubusercontent.com/aahaji-110/IAC-OAC/main/images/${baseName}.png`;
-        } else {
-            img.onerror = null;
-        }
-    }
-
-    /* وظائف تكبير وإغلاق الصورة */
     function openModal(src, caption) {
         const modal = document.getElementById('imageModal');
         const modalImg = document.getElementById('imgExpanded');
